@@ -16,6 +16,8 @@ public class bowling : MonoBehaviour
     private int TOTAL_FRAMES = 21;
     private int frames_completed = 0;
 
+    private int[] score_array;
+    private int COUNTER = 0;
     private int total_score = 0;
     // Start is called before the first frame update
     void Start()
@@ -25,7 +27,7 @@ public class bowling : MonoBehaviour
         ball = this.gameObject;
         ball_position = ball.transform.position;
         ball_rotation = ball.transform.rotation;
-
+        score_array = new int[10];
     }
 
     // Update is called once per frame
@@ -44,7 +46,7 @@ public class bowling : MonoBehaviour
         }
         if (other.gameObject.name == "Plane")
         {
-            
+
         }
     }
 
@@ -53,68 +55,83 @@ public class bowling : MonoBehaviour
         yield return new WaitForSeconds(10);
 
         int score = CountPinsDown();
+        Debug.Log("counted pins");
         frames_completed++;
         if (frames_completed <= 20)
         {
-            if(frames_completed%2==0)
+            if (frames_completed % 2 == 0)
             {
                 ResetBallPosition();
                 ResetPinPositions();
-                total_score+=score;
-                score=0;
-                SCORE=0;
+                total_score += score;
+                score = 0;
+                SCORE = 0;
             }
             else
             {
-                if(score==10)
+                if (score == 10)
                 {
                     frames_completed++;
                     ResetPinPositions();
-                    total_score+=score;
-                    score=0;
-                    SCORE=0;
+                    total_score += score;
+                    score = 0;
+                    SCORE = 0;
                 }
                 else
                 {
-                    total_score+=score;
-                    score=0;
-                    SCORE=0;
+                    total_score += score;
+                    score = 0;
+                    SCORE = 0;
                 }
                 ResetBallPosition();
+            }
+            if (frames_completed % 2 == 0)
+            {
+                score_array[COUNTER++] = total_score;
             }
         }
         else
         {
-            if(frames_completed%3==0)
+            if (frames_completed % 3 == 0)
             {
                 ResetBallPosition();
                 ResetPinPositions();
-                total_score+=score;
-                score=0;
-                SCORE=0;
+                total_score += score;
+                score = 0;
+                SCORE = 0;
+
             }
             else
             {
-                if(score==10)
+                if (score == 10)
                 {
-                    frames_completed++;
+                    frames_completed += 2;
                     ResetPinPositions();
-                    total_score+=score;
-                    score=0;
-                    SCORE=0;
+                    total_score += score;
+                    score = 0;
+                    SCORE = 0;
                 }
                 else
                 {
-                    total_score+=score;
-                    score=0;
-                    SCORE=0;
+                    total_score += score;
+                    score = 0;
+                    SCORE = 0;
                 }
                 ResetBallPosition();
+                if (frames_completed == 23)
+                {
+                    score_array[COUNTER++] = total_score;
+                }
             }
         }
 
         Debug.Log("frames completed");
         Debug.Log(frames_completed);
+        if (frames_completed == 23)
+        {
+            Debug.Log("Total score");
+            Debug.Log(total_score);
+        }
 
     }
     void savePinsPositions()
