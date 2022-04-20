@@ -50,6 +50,9 @@
      <Compile Include="Assets/Sketchfab For Unity/Scripts/Resizer.cs" />
      <Compile Include="Assets/Sketchfab For Unity/Scripts/SketchfabApi.cs" />
      <Compile Include="Assets/Sketchfab For Unity/Scripts/AssetBrowser/SketchfabBrowserWindow.cs" />
+     <Compile Include="Assets/GameManager.cs" />
+     <Compile Include="Assets/audioStrike.cs" />
+     <Compile Include="Assets/audioRoll.cs" />
      <None Include="Assets/Sketchfab For Unity/Dependencies/Shaders/GLTFFlipTexture.shader" />
      <None Include="Assets/Sketchfab For Unity/Dependencies/Shaders/GLTFColorSpace.cginc" />
      <None Include="Assets/Import/license.txt" />

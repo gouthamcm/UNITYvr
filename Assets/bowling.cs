@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
 public class bowling : MonoBehaviour
@@ -18,8 +19,12 @@ public class bowling : MonoBehaviour
 
     private int[] score_array;
     private int COUNTER = 0;
+    private int FLAG=0;
     private int total_score = 0;
     // Start is called before the first frame update
+    public Text socreUI;
+    public Text totalSocreUI;
+    public Text framesDoneUI;
     void Start()
     {
         pins = GameObject.FindGameObjectsWithTag("pins");
@@ -39,15 +44,40 @@ public class bowling : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
+        
         if (other.gameObject.name == "Pinobjects")
         {
+            FLAG=1;
             StartCoroutine(wait());
 
         }
-        if (other.gameObject.name == "Plane")
+        else if (other.gameObject.name == "Plane")
         {
-
+            if(FLAG==0)
+            {
+                wait_for_reset();
+            }
+            else{
+                FLAG=0;
+            }
+            
         }
+    }
+
+    private void wait_for_reset()
+    {
+
+        
+        frames_completed++;
+        SCORE = 0;
+        framesDoneUI.text = frames_completed.ToString();
+        socreUI.text = SCORE.ToString();
+        ResetBallPosition();
+        if(frames_completed%2==0)
+        {
+            ResetPinPositions();
+        }
+
     }
 
     private IEnumerator wait()
@@ -57,7 +87,7 @@ public class bowling : MonoBehaviour
         int score = CountPinsDown();
         Debug.Log("counted pins");
         frames_completed++;
-        if (frames_completed <= 20)
+        if (frames_completed <= 18)
         {
             if (frames_completed % 2 == 0)
             {
@@ -85,10 +115,10 @@ public class bowling : MonoBehaviour
                 }
                 ResetBallPosition();
             }
-            if (frames_completed % 2 == 0)
-            {
-                score_array[COUNTER++] = total_score;
-            }
+            // if (frames_completed % 2 == 0)
+            // {
+            //     score_array[COUNTER++] = total_score;
+            // }
         }
         else
         {
@@ -118,7 +148,7 @@ public class bowling : MonoBehaviour
                     SCORE = 0;
                 }
                 ResetBallPosition();
-                if (frames_completed == 23)
+                if (frames_completed >= 23)
                 {
                     score_array[COUNTER++] = total_score;
                 }
@@ -127,11 +157,9 @@ public class bowling : MonoBehaviour
 
         Debug.Log("frames completed");
         Debug.Log(frames_completed);
-        if (frames_completed == 23)
-        {
-            Debug.Log("Total score");
-            Debug.Log(total_score);
-        }
+
+        framesDoneUI.text = frames_completed.ToString();
+        totalSocreUI.text = total_score.ToString();
 
     }
     void savePinsPositions()
@@ -154,11 +182,12 @@ public class bowling : MonoBehaviour
             {
                 SCORE++;
                 pins[i].SetActive(false);
-                // Destroy(pins[i]);
+                Destroy(pins[i]);
             }
         }
         Debug.Log("Score now");
-        Debug.Log(SCORE);
+        // Debug.Log(SCORE);
+        socreUI.text = SCORE.ToString();
         return SCORE;
     }
     void ResetPinPositions()
