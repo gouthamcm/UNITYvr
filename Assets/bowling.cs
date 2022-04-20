@@ -115,10 +115,7 @@ public class bowling : MonoBehaviour
                 }
                 ResetBallPosition();
             }
-            // if (frames_completed % 2 == 0)
-            // {
-            //     score_array[COUNTER++] = total_score;
-            // }
+            
         }
         else
         {
@@ -178,11 +175,11 @@ public class bowling : MonoBehaviour
     {
         for (int i = 0; i < pins.Length; i++)
         {
-            if (pins[i].transform.eulerAngles.z > 15 && pins[i].transform.eulerAngles.z < 345 && pins[i].activeSelf)
+            if (pins[i].transform.eulerAngles.z > 5 && pins[i].transform.eulerAngles.z < 355 && pins[i].activeSelf)
             {
                 SCORE++;
                 pins[i].SetActive(false);
-                Destroy(pins[i]);
+                // Destroy(pins[i]);
             }
         }
         Debug.Log("Score now");

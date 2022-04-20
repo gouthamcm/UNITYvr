@@ -9,21 +9,23 @@ public class audioStrike : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        source = GameObject.FindObjectOfType<AudioSource>();
+
+        // source = GameObject.FindObjectOfType<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    private void OnCollisionEnter(Collision col)
+    private void OnTriggerEnter(Collider col)
     {
-        if(col.gameObject.name=="Ball")
+        if (col.gameObject.name == "Ball")
         {
-            Debug.Log("play");
-            Debug.Log(col.gameObject.name);
+            // Debug.Log("play");
+            // Debug.Log(col.gameObject.name);
+            source = GameObject.FindObjectOfType<AudioSource>();
             source.Play();
         }
     }
