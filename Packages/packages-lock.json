@@ -106,28 +106,10 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.subsystemregistration": {
-      "version": "1.1.0",
-      "depth": 2,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.modules.subsystems": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.sysroot": {
-      "version": "2.0.0",
+      "version": "1.0.6",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.sysroot.linux-x86_64": {
-      "version": "2.0.0",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.sysroot": "2.0.0"
-      },
       "url": "https://packages.unity.com"
     },
     "com.unity.test-framework": {
@@ -162,16 +144,6 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.unity.toolchain.linux-x86_64": {
-      "version": "2.0.0",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.sysroot": "2.0.0",
-        "com.unity.sysroot.linux-x86_64": "2.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
     "com.unity.ugui": {
       "version": "1.0.0",
       "depth": 0,
@@ -180,15 +152,6 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
-    },
-    "com.unity.xr.arsubsystems": {
-      "version": "4.1.9",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.subsystemregistration": "1.1.0"
-      },
-      "url": "https://packages.unity.com"
     },
     "com.unity.xr.core-utils": {
       "version": "2.0.0",
@@ -211,15 +174,6 @@
         "com.unity.modules.audio": "1.0.0",
         "com.unity.modules.imgui": "1.0.0",
         "com.unity.modules.physics": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.xr.interactionsubsystems": {
-      "version": "1.0.1",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.subsystemregistration": "1.0.5"
       },
       "url": "https://packages.unity.com"
     },
@@ -253,20 +207,6 @@
       "dependencies": {
         "com.unity.xr.management": "4.2.0",
         "com.unity.ugui": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.xr.windowsmr": {
-      "version": "4.6.2",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.modules.subsystems": "1.0.0",
-        "com.unity.modules.vr": "1.0.0",
-        "com.unity.modules.xr": "1.0.0",
-        "com.unity.xr.management": "4.0.1",
-        "com.unity.xr.interactionsubsystems": "1.0.1",
-        "com.unity.xr.arsubsystems": "4.0.9"
       },
       "url": "https://packages.unity.com"
     },

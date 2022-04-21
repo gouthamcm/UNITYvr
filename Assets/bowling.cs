@@ -34,6 +34,7 @@ public class bowling : MonoBehaviour
         ball = this.gameObject;
         ball_position = ball.transform.position;
         ball_rotation = ball.transform.rotation;
+        this.gameObject.GetComponent<Rigidbody>().maxAngularVelocity = (float)(3 * this.gameObject.GetComponent<Rigidbody>().maxAngularVelocity);
         score_array = new int[10];
         if (!PlayerPrefs.HasKey(KEYS[0]))
         {
