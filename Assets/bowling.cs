@@ -19,12 +19,14 @@ public class bowling : MonoBehaviour
 
     private int[] score_array;
     private int COUNTER = 0;
-    private int FLAG=0;
+    private int FLAG = 0;
     private int total_score = 0;
     // Start is called before the first frame update
     public Text socreUI;
     public Text totalSocreUI;
     public Text framesDoneUI;
+
+    private string[] KEYS = { "H1", "H2", "H3", "H4", "H5", "H6", "H7", "H8", "H9", "H10" };
     void Start()
     {
         pins = GameObject.FindGameObjectsWithTag("pins");
@@ -33,6 +35,13 @@ public class bowling : MonoBehaviour
         ball_position = ball.transform.position;
         ball_rotation = ball.transform.rotation;
         score_array = new int[10];
+        if (!PlayerPrefs.HasKey(KEYS[0]))
+        {
+            for (int i = 0; i < KEYS.Length; i++)
+            {
+                PlayerPrefs.SetInt(KEYS[i], 0);
+            }
+        }
     }
 
     // Update is called once per frame
@@ -44,64 +53,93 @@ public class bowling : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        
+
         if (other.gameObject.name == "Pinobjects")
         {
-            FLAG=1;
-            StartCoroutine(wait());
+            if (frames_completed < 21)
+            {
+                FLAG = 1;
+                StartCoroutine(wait());
+            }
+
 
         }
         else if (other.gameObject.name == "Plane")
         {
-            if(FLAG==0)
+            if (FLAG == 0)
             {
                 wait_for_reset();
             }
-            else{
-                FLAG=0;
-            }
-            
+
+
         }
     }
 
     private void wait_for_reset()
     {
 
-        
-        frames_completed++;
-        SCORE = 0;
-        framesDoneUI.text = frames_completed.ToString();
-        socreUI.text = SCORE.ToString();
-        ResetBallPosition();
-        if(frames_completed%2==0)
+        if (frames_completed < 21)
         {
+            frames_completed++;
+            SCORE = 0;
+            framesDoneUI.text = frames_completed.ToString();
+            socreUI.text = SCORE.ToString();
+            ResetBallPosition();
+            if (frames_completed % 2 == 0)
+            {
+                ResetPinPositions();
+            }
+
+            if (frames_completed == 21)
+            {
+                int temp;
+                int prev = 0;
+                int i = 0;
+                for (i = 0; i < KEYS.Length; i++)
+                {
+
+                    prev = PlayerPrefs.GetInt(KEYS[i]);
+                    if (PlayerPrefs.GetInt(KEYS[i]) < total_score)
+                    {
+                        // Debug.Log(i.ToString());
+                        // Debug.Log(total_score.ToString());
+                        PlayerPrefs.SetInt(KEYS[i], total_score);
+                        break;
+                    }
+                }
+                i++;
+                while (i < KEYS.Length)
+                {
+                    temp = prev;
+                    prev = PlayerPrefs.GetInt(KEYS[i]);
+                    PlayerPrefs.SetInt(KEYS[i], temp);
+                    i++;
+                }
+
+            }
+        }
+        else
+        {
+            ResetBallPosition();
             ResetPinPositions();
         }
-
     }
 
     private IEnumerator wait()
     {
         yield return new WaitForSeconds(10);
-
-        int score = CountPinsDown();
-        Debug.Log("counted pins");
-        frames_completed++;
-        if (frames_completed <= 18)
+        FLAG = 0;
+        if (frames_completed < 21)
         {
-            if (frames_completed % 2 == 0)
+            int score = CountPinsDown();
+            Debug.Log("counted pins");
+            frames_completed++;
+
+            if (frames_completed <= 18)
             {
-                ResetBallPosition();
-                ResetPinPositions();
-                total_score += score;
-                score = 0;
-                SCORE = 0;
-            }
-            else
-            {
-                if (score == 10)
+                if (frames_completed % 2 == 0)
                 {
-                    frames_completed++;
+                    ResetBallPosition();
                     ResetPinPositions();
                     total_score += score;
                     score = 0;
@@ -109,55 +147,95 @@ public class bowling : MonoBehaviour
                 }
                 else
                 {
-                    total_score += score;
-                    score = 0;
-                    SCORE = 0;
+                    if (score == 10)
+                    {
+                        frames_completed++;
+                        ResetPinPositions();
+                        total_score += score;
+                        score = 0;
+                        SCORE = 0;
+                    }
+                    else
+                    {
+                        total_score += score;
+                        score = 0;
+                        SCORE = 0;
+                    }
+                    ResetBallPosition();
                 }
-                ResetBallPosition();
-            }
-            
-        }
-        else
-        {
-            if (frames_completed % 3 == 0)
-            {
-                ResetBallPosition();
-                ResetPinPositions();
-                total_score += score;
-                score = 0;
-                SCORE = 0;
 
             }
             else
             {
-                if (score == 10)
+                if (frames_completed % 3 == 0)
                 {
-                    frames_completed += 2;
+                    ResetBallPosition();
                     ResetPinPositions();
                     total_score += score;
                     score = 0;
                     SCORE = 0;
+
                 }
                 else
                 {
-                    total_score += score;
-                    score = 0;
-                    SCORE = 0;
+                    if (score == 10)
+                    {
+                        frames_completed = 21;
+                        ResetPinPositions();
+                        total_score += score;
+                        score = 0;
+                        SCORE = 0;
+                    }
+                    else
+                    {
+                        frames_completed++;
+                        total_score += score;
+                        score = 0;
+                        SCORE = 0;
+                    }
+
+                    ResetBallPosition();
+
                 }
-                ResetBallPosition();
-                if (frames_completed >= 23)
+
+            }
+
+            if (frames_completed == 21)
+            {
+                int temp;
+                int prev = 0;
+                int i = 0;
+                for (i = 0; i < KEYS.Length; i++)
                 {
-                    score_array[COUNTER++] = total_score;
+
+                    prev = PlayerPrefs.GetInt(KEYS[i]);
+                    if (PlayerPrefs.GetInt(KEYS[i]) < total_score)
+                    {
+                        // Debug.Log(i.ToString());
+                        // Debug.Log(total_score.ToString());
+                        // prev = PlayerPrefs.GetInt(KEYS[i]);
+
+                        PlayerPrefs.SetInt(KEYS[i], total_score);
+                        break;
+                    }
                 }
+                i++;
+                while (i < KEYS.Length)
+                {
+                    temp = prev;
+
+                    prev = PlayerPrefs.GetInt(KEYS[i]);
+                    PlayerPrefs.SetInt(KEYS[i], temp);
+                    i++;
+                }
+
+            }
+            if (frames_completed <= 21)
+            {
+                framesDoneUI.text = frames_completed.ToString();
+                totalSocreUI.text = total_score.ToString();
             }
         }
-
-        Debug.Log("frames completed");
-        Debug.Log(frames_completed);
-
-        framesDoneUI.text = frames_completed.ToString();
-        totalSocreUI.text = total_score.ToString();
-
     }
     void savePinsPositions()
     {
@@ -182,7 +260,7 @@ public class bowling : MonoBehaviour
                 // Destroy(pins[i]);
             }
         }
-        Debug.Log("Score now");
+        // Debug.Log("Score now");
         // Debug.Log(SCORE);
         socreUI.text = SCORE.ToString();
         return SCORE;

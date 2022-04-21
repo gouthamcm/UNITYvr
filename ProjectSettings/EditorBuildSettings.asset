@@ -5,9 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: d1c3109bdb54ad54c8a2b2838528e640
+  - enabled: 1
+    path: Assets/Scenes/Main Menu.unity
+    guid: 2ecaa159198629fb18c7f52077069c15
+  - enabled: 1
+    path: Assets/Scenes/High Score.unity
+    guid: adc4a71eaba2f15e2b15f4194af8c9c3
   - enabled: 1
     path: Assets/Scenes/VR bowling.unity
     guid: afe34263da398ab6eac607e1c121bfaa
