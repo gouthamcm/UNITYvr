@@ -1,0 +1,11 @@
+Model Information:
+* title:	Bowling Set Blender Render
+* source:	https://sketchfab.com/3d-models/bowling-set-blender-render-9e3c72a13fc54d7f845ffdc968703c2c
+* author:	AlcatraZ_734 (https://sketchfab.com/rishi.saxena2019)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Bowling Set Blender Render" (https://sketchfab.com/3d-models/bowling-set-blender-render-9e3c72a13fc54d7f845ffdc968703c2c) by AlcatraZ_734 (https://sketchfab.com/rishi.saxena2019) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
