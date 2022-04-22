@@ -7,12 +7,12 @@ public class GameMenu : MonoBehaviour
 {
     public void onGameLoad()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+2);
     }
 
     public void HighScoreMenu()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
 
     

@@ -30,6 +30,6 @@ public class HighScoreMenu : MonoBehaviour
     }
     public void MainMenu()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex-1);
     }
 }
