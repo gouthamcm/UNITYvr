@@ -26,6 +26,14 @@ public class bowling : MonoBehaviour
     public Text totalSocreUI;
     public Text framesDoneUI;
 
+
+    private int currentFrame = 1;
+
+    private string[] scoreBoard = new string[22];
+
+    private int cumScore = 0;
+    private int currentRoundScore = 0;
+
     private string[] KEYS = { "H1", "H2", "H3", "H4", "H5", "H6", "H7", "H8", "H9", "H10" };
     void Start()
     {
@@ -48,12 +56,11 @@ public class bowling : MonoBehaviour
     void Update()
     {
 
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-
-
         if (other.gameObject.name == "Pinobjects")
         {
             if (frames_completed < 21)
@@ -78,19 +85,25 @@ public class bowling : MonoBehaviour
     private void wait_for_reset()
     {
 
-        if (frames_completed < 21)
+        if (currentFrame <= 21)
         {
-            frames_completed++;
+            framesDoneUI.text = currentFrame.ToString();
+
             SCORE = 0;
-            framesDoneUI.text = frames_completed.ToString();
+
             socreUI.text = SCORE.ToString();
+
+            scoreBoard[currentFrame] = "0";
+
             ResetBallPosition();
-            if (frames_completed % 2 == 0)
+            if (currentFrame % 2 == 0)
             {
                 ResetPinPositions();
             }
 
-            if (frames_completed == 21)
+
+
+            if (currentFrame == 21)
             {
                 int temp;
                 int prev = 0;
@@ -117,6 +130,8 @@ public class bowling : MonoBehaviour
                 }
 
             }
+
+            currentFrame++;
         }
         else
         {
@@ -129,112 +144,282 @@ public class bowling : MonoBehaviour
     {
         yield return new WaitForSeconds(10);
         FLAG = 0;
-        if (frames_completed < 21)
-        {
-            int score = CountPinsDown();
-            Debug.Log("counted pins");
-            frames_completed++;
 
-            if (frames_completed <= 18)
+
+        if (currentFrame <= 21)
+        {
+
+            framesDoneUI.text = currentFrame.ToString();
+
+            Debug.Log("Current Frame : " + currentFrame);
+            int current_score = CountPinsDown();
+            SCORE = 0;
+            if (currentFrame <= 18)
             {
-                if (frames_completed % 2 == 0)
+                // even position
+                if (currentFrame % 2 == 0)
                 {
-                    ResetBallPosition();
-                    ResetPinPositions();
-                    total_score += score;
-                    score = 0;
-                    SCORE = 0;
-                }
-                else
-                {
-                    if (score == 10)
+
+                    currentRoundScore += current_score;
+
+                    if (currentRoundScore == 10)
                     {
-                        frames_completed++;
-                        ResetPinPositions();
-                        total_score += score;
-                        score = 0;
-                        SCORE = 0;
+                        scoreBoard[currentFrame] = "-";
                     }
                     else
                     {
-                        total_score += score;
-                        score = 0;
-                        SCORE = 0;
+                        scoreBoard[currentFrame] = current_score.ToString();
                     }
-                    ResetBallPosition();
+
+                    currentRoundScore = 0;
+
+                    //ResetBallPosition();
+                    ResetPinPositions();
+
+
+                }
+                else
+                {
+                    // odd position
+                    if (current_score == 10)
+                    {
+                        scoreBoard[currentFrame] = "X";
+                        currentRoundScore = 0;
+                        currentFrame++;
+                        //ResetBallPosition();
+                        ResetPinPositions();
+
+                    }
+                    else
+                    {
+                        scoreBoard[currentFrame] = current_score.ToString();
+                        currentRoundScore = current_score;
+
+                    }
                 }
 
+                currentFrame++;
+                ResetBallPosition();
             }
+
             else
             {
-                if (frames_completed % 3 == 0)
+                // last rounds of bowling
+                if (currentFrame == 19)
                 {
-                    ResetBallPosition();
-                    ResetPinPositions();
-                    total_score += score;
-                    score = 0;
-                    SCORE = 0;
-
-                }
-                else
-                {
-                    if (score == 10)
+                    if (current_score == 10)
                     {
-                        frames_completed = 21;
+                        scoreBoard[currentFrame] = "X";
+                        currentRoundScore = 0;
+                        //ResetBallPosition();
                         ResetPinPositions();
-                        total_score += score;
-                        score = 0;
-                        SCORE = 0;
+
                     }
                     else
                     {
-                        frames_completed++;
-                        total_score += score;
-                        score = 0;
-                        SCORE = 0;
+                        scoreBoard[currentFrame] = current_score.ToString();
+                        currentRoundScore = current_score;
+                        // currentFrame++;
                     }
 
-                    ResetBallPosition();
-
+                    currentFrame++;
                 }
 
-            }
-
-            if (frames_completed == 21)
-            {
-                int temp;
-                int prev = 0;
-                int i = 0;
-                for (i = 0; i < KEYS.Length; i++)
+                else if (currentFrame == 20)
                 {
-
-                    prev = PlayerPrefs.GetInt(KEYS[i]);
-                    if (PlayerPrefs.GetInt(KEYS[i]) < total_score)
+                    if (current_score == 10)
                     {
-                        // Debug.Log(i.ToString());
-                        // Debug.Log(total_score.ToString());
-                        // prev = PlayerPrefs.GetInt(KEYS[i]);
+                        scoreBoard[currentFrame] = "X";
+                        currentRoundScore = 0;
+                        //ResetBallPosition();
+                        ResetPinPositions();
 
-                        PlayerPrefs.SetInt(KEYS[i], total_score);
-                        break;
                     }
+                    else
+                    {
+                        currentRoundScore += current_score;
+
+                        if (currentRoundScore == 10)
+                        {
+                            scoreBoard[currentFrame] = "-";
+                            //ResetBallPosition();
+                            ResetPinPositions();
+                        }
+
+                        else
+                        {
+                            scoreBoard[currentFrame] = current_score.ToString();
+                            current_score = 0;
+                            scoreBoard[currentFrame + 1] = current_score.ToString();
+
+                            currentFrame = 22;
+                            //ResetBallPosition();
+                            ResetPinPositions();
+                        }
+
+
+                    }
+                    currentFrame++;
                 }
-                i++;
-                while (i < KEYS.Length)
+
+                else if (currentFrame == 21)
                 {
-                    temp = prev;
+                    if (current_score == 10)
+                    {
+                        scoreBoard[currentFrame] = "X";
+                    }
 
-                    prev = PlayerPrefs.GetInt(KEYS[i]);
-                    PlayerPrefs.SetInt(KEYS[i], temp);
-                    i++;
+                    else
+                    {
+                        scoreBoard[currentFrame] = current_score.ToString();
+                    }
+
+
+                    currentFrame++;
+                    //ResetBallPosition();
+                    ResetPinPositions();
                 }
 
+
+                ResetBallPosition();
+
             }
-            if (frames_completed <= 21)
+
+            Debug.Log("Current Frame " + currentFrame.ToString());
+            for (int i = 1; i < currentFrame; i++)
             {
-                framesDoneUI.text = frames_completed.ToString();
-                totalSocreUI.text = total_score.ToString();
+                // print
+                Debug.Log(scoreBoard[i]);
             }
+            Debug.Log("END");
+
+        }
+
+
+
+
+
+        // if (frames_completed < 21)
+        // {
+        //     int score = CountPinsDown();
+        //     Debug.Log("counted pins");
+        //     frames_completed++;
+        //     scoreBoard[currentFrame] = score.ToString();
+        //     currentFrame++;
+
+        //     if (frames_completed <= 18)
+        //     {
+        //         if (frames_completed % 2 == 0)
+        //         {
+        //             ResetBallPosition();
+        //             ResetPinPositions();
+        //             total_score += score;
+        //             score = 0;
+        //             SCORE = 0;
+        //         }
+        //         else
+        //         {
+        //             if (score == 10)
+        //             {
+        //                 frames_completed++;
+        //                 scoreBoard[currentFrame-1] = "X";
+        //                 currentFrame++;
+        //                 ResetPinPositions();
+        //                 total_score += score;
+        //                 score = 0;
+        //                 SCORE = 0;
+        //             }
+        //             else
+        //             {
+        //                 total_score += score;
+        //                 score = 0;
+        //                 SCORE = 0;
+        //             }
+        //             ResetBallPosition();
+        //         }
+
+        //     }
+        //     else
+        //     {
+
+
+        //         if (frames_completed % 3 == 0)
+        //         {
+        //             ResetBallPosition();
+        //             ResetPinPositions();
+        //             total_score += score;
+        //             score = 0;
+        //             SCORE = 0;
+
+        //         }
+        //         else
+        //         {
+        //             if (score == 10)
+        //             {
+        //                 frames_completed = 21;
+        //                 ResetPinPositions();
+        //                 total_score += score;
+        //                 score = 0;
+        //                 SCORE = 0;
+        //             }
+        //             else
+        //             {
+        //                 frames_completed++;
+        //                 total_score += score;
+        //                 score = 0;
+        //                 SCORE = 0;
+        //             }
+
+        //             ResetBallPosition();
+
+        //         }
+
+        //     }
+
+        if (currentFrame == 21)
+        {
+            int temp;
+            int prev = 0;
+            int i = 0;
+            for (i = 0; i < KEYS.Length; i++)
+            {
+
+                prev = PlayerPrefs.GetInt(KEYS[i]);
+                if (PlayerPrefs.GetInt(KEYS[i]) < total_score)
+                {
+                    // Debug.Log(i.ToString());
+                    // Debug.Log(total_score.ToString());
+                    // prev = PlayerPrefs.GetInt(KEYS[i]);
+
+                    PlayerPrefs.SetInt(KEYS[i], total_score);
+                    break;
+                }
+            }
+            i++;
+            while (i < KEYS.Length)
+            {
+                temp = prev;
+
+                prev = PlayerPrefs.GetInt(KEYS[i]);
+                PlayerPrefs.SetInt(KEYS[i], temp);
+                i++;
+            }
+
+            //     }
+            //     if (frames_completed <= 21)
+            //     {
+            //         framesDoneUI.text = frames_completed.ToString();
+            //         totalSocreUI.text = total_score.ToString();
+            //     }
+
+            //     // iterate over a for loop
+            //     Debug.Log("Current Frame " + currentFrame.ToString());
+            //     for (int i = 0; i <= currentFrame; i++) {
+            //         // print
+            //         Debug.Log(scoreBoard[i]);
+            //     }
+            //     Debug.Log("END");
+
         }
     }
     void savePinsPositions()
